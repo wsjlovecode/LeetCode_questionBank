@@ -56,3 +56,20 @@ class Solution {
         return ans;
     }
 }
+
+
+附上DP版，dp的思想就是二维数组的思想，dp[i][j]表示i-j之间最多的回文子串，如果i位置的字符和j位置的相同，且i-1-j+1的位置是回文子串，那么i-j也是回文子串，这就想到了DP
+count = 0
+        dp = [[0]*len(s) for _ in range(len(s))]
+        for j in range(len(s)):
+            for i in range(j+1):
+                if i == j:
+                    dp[i][j]=1
+                    count += 1
+                elif j-i==1 and s[i]==s[j]:
+                    dp[i][j]=1
+                    count += 1 
+                elif j-i>1 and s[i]==s[j] and dp[i+1][j-1]:
+                    dp[i][j] = 1
+                    count += 1
+        return count
