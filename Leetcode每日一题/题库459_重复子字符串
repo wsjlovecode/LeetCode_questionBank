@@ -1,0 +1,60 @@
+给定一个非空的字符串，判断它是否可以由它的一个子串重复多次构成。给定的字符串只含有小写英文字母，并且长度不超过10000。
+
+示例 1:
+
+输入: "abab"
+
+输出: True
+
+解释: 可由子字符串 "ab" 重复两次构成。
+
+示例 2:
+
+输入: "aba"
+
+输出: False
+
+示例 3:
+
+输入: "abcabcabcabc"
+
+输出: True
+
+解释: 可由子字符串 "abc" 重复四次构成。 (或者子字符串 "abcabc" 重复两次构成。)
+
+
+
+这道题有一个思想，那就是重复子串的长度一定是字符串长度的因数，且只要字符串中有与开头相同字符的，都可以假设为重复子串，枚举出来，最后再用一个for循环判断
+
+题解：
+import java.util.*;
+
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        if(s.length() == 0||s.length()==1) return false;
+        List<Integer> indexes =new ArrayList<>();
+        indexes.add(0);
+        //计算出所有有可能的子串长度
+        for (int i = 1; i <s.length() ; i++) {
+            //和第0个位置的字符相等，且总字符串的长度能够整除当前子串长度
+            if(s.charAt(i)==s.charAt(0)
+                    &&s.length()%i==0){
+                indexes.add(i);
+            }
+        }
+        for (int i = 1; i < indexes.size() ; i++) {
+            int length =indexes.get(i);  //当前考虑的子串长度单位
+            String str = s.substring(0,length);   //子串
+            int j = length;
+            //以当前考虑的长度单位进行遍历，如果每隔length的子串都等于str，
+            //并且遍历到了字符串末尾，说明结果为true，反之跳出考虑下一种子串长度
+            for (; j <s.length() ; j=j+length) {
+                if(!s.substring(j,j+length).equals(str))
+                    break;
+            }
+            if(j==s.length())
+                return true;
+        }
+        return false;
+    }
+}
