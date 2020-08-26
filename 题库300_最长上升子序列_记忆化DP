@@ -1,0 +1,41 @@
+给定一个无序的整数数组，找到其中最长上升子序列的长度。
+
+示例:
+
+输入: [10,9,2,5,3,7,101,18]
+输出: 4 
+解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。
+
+说明:
+
+    可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
+    你算法的时间复杂度应该为 O(n2) 。
+
+
+
+此题要优化的数组dp[i]表示以下标i结尾的数组的最长上升子序列长度，又用到了记忆化DP的方法
+题解：
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int length = nums.length;
+        if(length < 2)
+            return length;
+        int[] dp = new int[length];
+        Arrays.fill(dp,1);
+
+        for(int j=0;j<length;++j){
+            for(int i=0;i<j;++i){
+                if(nums[i] < nums[j]){
+                    dp[j] = Math.max(dp[j],dp[i]+1);
+                }
+            }
+        }
+        int tmp = dp[0];
+        for(int i=0;i<dp.length;++i){
+            tmp = Math.max(dp[i],tmp);
+        }
+        return tmp;
+    }
+}
+
+//这道题让我明白了选择最优化数组dp[]的重要性，从看到到想出解决方法还不到20min
